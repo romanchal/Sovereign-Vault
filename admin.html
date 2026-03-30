@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Sovereign Control | Alex Promoting Agency</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#05070a] text-slate-300 font-sans min-h-screen selection:bg-amber-500 selection:text-black">
+
+    <div id="loginScreen" class="fixed inset-0 z-[100] bg-[#05070a] flex items-center justify-center p-6 transition-opacity duration-700">
+        <div class="w-full max-w-md p-12 bg-[#0b1120] border border-white/5 rounded-[40px] shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-20 -left-20 w-40 h-40 bg-amber-500/10 blur-[80px]"></div>
+            <div class="text-center mb-12 relative z-10">
+                <i class="fa-solid fa-crown text-amber-500 text-5xl mb-6"></i>
+                <h1 class="text-3xl font-black text-white uppercase tracking-[0.2em] italic">Vault Login</h1>
+                <p class="text-slate-500 text-[10px] mt-4 uppercase tracking-[0.4em] font-bold">Encrypted Authorization Required</p>
+            </div>
+            <form id="loginForm" class="space-y-6 relative z-10">
+                <input type="text" id="userInput" placeholder="USERNAME" required class="w-full bg-black border border-white/10 p-5 rounded-2xl outline-none focus:border-amber-500 text-white font-mono text-xs uppercase tracking-widest transition-all">
+                <input type="password" id="passInput" placeholder="PASSWORD" required class="w-full bg-black border border-white/10 p-5 rounded-2xl outline-none focus:border-amber-500 text-white font-mono text-xs uppercase tracking-widest transition-all">
+                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 text-black font-black py-5 rounded-2xl uppercase tracking-[0.3em] transition-all shadow-xl shadow-amber-600/20">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboard" class="hidden max-w-[1400px] mx-auto px-8 py-12">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 border-b border-white/5 pb-10 gap-6">
+            <div>
+                <h1 class="text-4xl font-black text-white uppercase tracking-tighter italic">Sovereign <span class="text-amber-500">Console</span></h1>
+                <p class="text-[10px] text-slate-600 font-bold uppercase tracking-[0.5em] mt-2">Core Database Management System</p>
+            </div>
+            <button onclick="location.reload()" class="bg-white/5 border border-white/10 px-6 py-3 rounded-xl text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] hover:text-red-500 hover:border-red-500/50 transition-all">Disconnect Session</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div class="lg:col-span-4 bg-[#0b1120] p-10 rounded-[32px] border border-white/5 h-fit shadow-2xl sticky top-12">
+                <h2 class="text-[11px] font-black text-white uppercase tracking-[0.4em] mb-10 border-b border-white/5 pb-4">Deploy New Asset</h2>
+                <form id="addOfferForm" class="space-y-6">
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-widest ml-1">Identity</label>
+                        <input type="text" id="appName" placeholder="APP NAME" required class="w-full bg-black border border-white/5 p-4 rounded-xl text-xs text-white outline-none focus:border-amber-500">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-widest ml-1">Classification</label>
+                        <select id="category" class="w-full bg-black border border-white/5 p-4 rounded-xl text-xs text-white outline-none focus:border-amber-500">
+                            <option value="Crypto">Crypto</option>
+                            <option value="Gaming">Gaming</option>
+                            <option value="Shopping">Shopping</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-widest ml-1">Dividend Yield</label>
+                        <input type="text" id="reward" placeholder="REWARD (e.g. $500)" required class="w-full bg-black border border-white/5 p-4 rounded-xl text-xs text-white outline-none focus:border-amber-500">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-widest ml-1">Sovereign Link</label>
+                        <input type="url" id="link" placeholder="PROMO URL" required class="w-full bg-black border border-white/5 p-4 rounded-xl text-xs text-white outline-none focus:border-amber-500">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-widest ml-1">Branding Logo URL</label>
+                        <input type="url" id="logoUrl" placeholder="https://image-link.png" required class="w-full bg-black border border-white/5 p-4 rounded-xl text-xs text-white outline-none focus:border-amber-500">
+                    </div>
+                    <button type="submit" class="w-full bg-white hover:bg-amber-500 text-black font-black py-5 rounded-2xl uppercase text-[11px] tracking-[0.3em] transition-all mt-4">Initiate Deployment</button>
+                </form>
+            </div>
+
+            <div class="lg:col-span-8 bg-[#0b1120] p-10 rounded-[32px] border border-white/5 shadow-2xl">
+                <h2 class="text-[11px] font-black text-white uppercase tracking-[0.4em] mb-10 border-b border-white/5 pb-4">Asset Performance Ledger</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-[10px] uppercase font-bold tracking-[0.2em]">
+                        <thead>
+                            <tr class="text-slate-600 border-b border-white/5">
+                                <th class="pb-8">Asset</th>
+                                <th class="pb-8">Yield</th>
+                                <th class="pb-8">Analytics</th>
+                                <th class="pb-8 text-right">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="offerTable" class="divide-y divide-white/5">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = "http://127.0.0.1:8000";
+
+        // Login Logic
+        document.getElementById('loginForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const u = document.getElementById('userInput').value;
+            const p = document.getElementById('passInput').value;
+            try {
+                const res = await fetch(`${API}/admin/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ username: u, password: p })
+                });
+                if (res.ok) {
+                    document.getElementById('loginScreen').classList.add('opacity-0', 'pointer-events-none');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    loadOffers();
+                } else { alert("ACCESS DENIED: Credentials Rejected"); }
+            } catch (err) { alert("CONNECTION ERROR: Engine Offline"); }
+        };
+
+        // Table Loader
+        async function loadOffers() {
+            try {
+                const res = await fetch(`${API}/api/get-offers`);
+                const data = await res.json();
+                const table = document.getElementById('offerTable');
+                table.innerHTML = data.map(o => `
+                    <tr class="hover:bg-white/5 transition-all group">
+                        <td class="py-6 flex items-center gap-4">
+                            <img src="${o.logo_url}" class="w-10 h-10 object-contain rounded-lg bg-black border border-white/5">
+                            <span class="text-white font-black italic tracking-tighter text-sm uppercase">${o.app_name}</span>
+                        </td>
+                        <td class="py-6 text-amber-500 font-black text-sm">${o.reward_amount}</td>
+                        <td class="py-6 font-mono text-slate-500">${o.clicks} DIVIDENDS</td>
+                        <td class="py-6 text-right">
+                            <button onclick="deleteOffer(${o.id})" class="bg-red-950/30 text-red-900 hover:bg-red-600 hover:text-white border border-red-900/20 px-4 py-2 rounded-lg transition-all">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) { console.error("Sync Failure"); }
+        }
+
+        async function deleteOffer(id) {
+            if(confirm("Confirm asset termination?")) {
+                await fetch(`${API}/admin/delete-offer/${id}`, { method: 'DELETE' });
+                loadOffers();
+            }
+        }
+
+        document.getElementById('addOfferForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const data = {
+                app_name: document.getElementById('appName').value,
+                category: document.getElementById('category').value,
+                reward_amount: document.getElementById('reward').value,
+                promo_link: document.getElementById('link').value,
+                logo_url: document.getElementById('logoUrl').value
+            };
+            const res = await fetch(`${API}/admin/add-offer`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            if(res.ok) { e.target.reset(); loadOffers(); }
+        };
+    </script>
+</body>
+</html>
