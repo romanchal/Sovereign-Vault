@@ -1,0 +1,11 @@
+# Secret Keys
+.env
+
+# Local Database
+*.db
+sovereign_vault.db
+
+# Media Folders
+vault_downloads/
+downloads/
+__pycache__/
