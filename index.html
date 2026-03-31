@@ -9,50 +9,53 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap');
         body { background-color: #05070a; color: white; font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .btn-active { background: #eab308 !important; color: black !important; box-shadow: 0 0 15px rgba(234, 179, 8, 0.3); }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .btn-glow { box-shadow: 0 0 20px rgba(234, 179, 8, 0.2); }
+        .active-tab { background: #eab308 !important; color: black !important; }
     </style>
 </head>
 <body class="selection:bg-amber-500 selection:text-black">
 
-    <nav class="p-6 flex justify-between items-center border-b border-white/5 bg-[#05070a]/80 sticky top-0 z-50">
+    <nav class="p-6 flex justify-between items-center border-b border-white/5 sticky top-0 z-50 bg-[#05070a]/90 backdrop-blur-md">
         <div class="flex items-center gap-3">
-            <div class="w-9 h-9 bg-amber-500 rounded flex items-center justify-center">
-                <i class="fa-solid fa-bolt-lightning text-black"></i>
+            <div class="w-8 h-8 bg-amber-500 rounded flex items-center justify-center">
+                <i class="fa-solid fa-bolt text-black text-sm"></i>
             </div>
             <h1 class="font-black text-lg tracking-tighter uppercase italic">Roman</h1>
         </div>
-        <div class="text-[9px] font-black uppercase text-amber-500/60 tracking-widest">v5.0 Stable</div>
+        <div id="engineStatus" class="text-[9px] font-black uppercase text-amber-500 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span> Engine Ready
+        </div>
     </nav>
 
-    <main class="max-w-2xl mx-auto px-6 py-16">
-        <div class="text-center mb-10">
-            <h2 class="text-5xl font-black mb-2 italic uppercase tracking-tighter">Sovereign <span class="text-amber-500">Hub</span></h2>
-            <p class="text-slate-500 text-[9px] tracking-[0.4em] font-bold uppercase">No Limits • No Ads • Pure Extraction</p>
+    <main class="max-w-xl mx-auto px-6 py-20">
+        <div class="text-center mb-12">
+            <h2 class="text-6xl font-black italic uppercase tracking-tighter mb-2">Sovereign <span class="text-amber-500">Hub</span></h2>
+            <p class="text-slate-500 text-[10px] tracking-[0.5em] font-bold uppercase">Private Media Extraction v6.0</p>
         </div>
 
-        <div class="glass p-8 rounded-[32px] shadow-2xl">
-            <div class="flex bg-black/40 p-1 rounded-xl border border-white/5 gap-1 mb-8">
-                <button onclick="setMode('mp3')" id="m-mp3" class="flex-1 py-3 rounded-lg text-[10px] font-black uppercase btn-active transition-all">Audio</button>
-                <button onclick="setMode('mp4')" id="m-mp4" class="flex-1 py-3 rounded-lg text-[10px] font-black uppercase bg-transparent transition-all">Video</button>
+        <div class="glass p-8 rounded-[40px] border-amber-500/10">
+            <div class="flex bg-black/40 p-1 rounded-2xl border border-white/5 gap-1 mb-8">
+                <button onclick="setMode('mp3')" id="m-mp3" class="flex-1 py-3.5 rounded-xl text-[10px] font-black uppercase active-tab transition-all">Audio</button>
+                <button onclick="setMode('mp4')" id="m-mp4" class="flex-1 py-3.5 rounded-xl text-[10px] font-black uppercase transition-all">Video</button>
             </div>
 
             <div class="space-y-4">
-                <input type="url" id="urlInput" placeholder="Paste YouTube/Insta/FB Link..." 
-                       class="w-full bg-black/40 border border-white/10 rounded-xl p-5 text-sm focus:outline-none focus:border-amber-500 transition-all font-mono">
+                <input type="url" id="urlField" placeholder="Paste Video Link..." 
+                       class="w-full bg-black/60 border border-white/10 rounded-2xl p-6 text-sm focus:outline-none focus:border-amber-500 transition-all font-mono">
                 
-                <button onclick="run()" id="mainBtn" class="w-full bg-white hover:bg-amber-500 text-black font-black py-5 rounded-xl uppercase tracking-[0.2em] text-[11px] transition-all flex items-center justify-center gap-3">
-                    Start Extraction
+                <button onclick="extract()" id="extractBtn" class="w-full bg-white hover:bg-amber-500 text-black font-black py-6 rounded-2xl uppercase tracking-[0.3em] text-[11px] transition-all flex items-center justify-center gap-3 btn-glow">
+                    Initiate Capture
                 </button>
             </div>
 
-            <div id="loader" class="hidden mt-8">
-                <div class="flex justify-between text-[9px] font-black uppercase mb-2 text-amber-500">
-                    <span id="loadText">Processing Stream...</span>
+            <div id="loader" class="hidden mt-10">
+                <div class="flex justify-between text-[9px] font-black uppercase mb-3 text-amber-500">
+                    <span id="loadText">Bypassing Security...</span>
                     <span id="loadPercent">0%</span>
                 </div>
                 <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                    <div id="bar" class="h-full bg-amber-500 transition-all duration-300" style="width: 0%"></div>
+                    <div id="bar" class="h-full bg-amber-500 shadow-[0_0_15px_#eab308] transition-all duration-500" style="width: 0%"></div>
                 </div>
             </div>
         </div>
@@ -62,36 +65,48 @@
         const API = "https://sovereign-vault.onrender.com";
         let mode = 'mp3';
 
+        // --- AUTO-PING (Keep Alive) ---
+        setInterval(() => fetch(`${API}/api/ping`).catch(() => {}), 13 * 60 * 1000);
+
         function setMode(m) {
             mode = m;
-            document.querySelectorAll('button[id^="m-"]').forEach(b => b.classList.remove('btn-active'));
-            document.getElementById(`m-${m}`).classList.add('btn-active');
+            document.querySelectorAll('button[id^="m-"]').forEach(b => b.classList.remove('active-tab'));
+            document.getElementById(`m-${m}`).classList.add('active-tab');
         }
 
-        async function run() {
-            const url = document.getElementById('urlInput').value;
-            const btn = document.getElementById('mainBtn');
+        async function extract() {
+            const url = document.getElementById('urlField').value;
+            const btn = document.getElementById('extractBtn');
             const loader = document.getElementById('loader');
-            if(!url) return alert("Enter URL");
+            if(!url) return alert("Link Required.");
 
             btn.disabled = true; loader.classList.remove('hidden');
             let p = 0;
-            const i = setInterval(() => { if(p < 90) p += 2; bar.style.width = p + '%'; loadPercent.innerText = p + '%'; }, 400);
+            const i = setInterval(() => { if(p < 92) p += 3; bar.style.width = p + '%'; loadPercent.innerText = p + '%'; }, 600);
 
             try {
-                const r = await fetch(`${API}/api/process-media`, {
+                const res = await fetch(`${API}/api/process-media`, {
                     method: 'POST', headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ url, format: mode })
                 });
-                if(!r.ok) throw new Error();
-                const b = await r.blob();
-                const d = window.URL.createObjectURL(b);
+
+                if(!res.ok) throw new Error();
+
+                const blob = await res.blob();
+                const dUrl = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = d; a.download = `Sovereign_${Date.now()}.${mode}`;
+                a.href = dUrl; a.download = `Sovereign_${Date.now()}.${mode}`;
                 a.click();
+                
                 clearInterval(i); bar.style.width = '100%'; loadPercent.innerText = '100%';
-            } catch (e) { alert("Server Busy. Try again."); clearInterval(i); }
-            finally { btn.disabled = false; setTimeout(() => loader.classList.add('hidden'), 3000); }
+                document.getElementById('loadText').innerText = "EXTRACTION COMPLETE";
+            } catch (e) {
+                alert("YouTube Blocked this session. Update cookies on Render.");
+                clearInterval(i);
+            } finally {
+                btn.disabled = false;
+                setTimeout(() => loader.classList.add('hidden'), 5000);
+            }
         }
     </script>
 </body>
